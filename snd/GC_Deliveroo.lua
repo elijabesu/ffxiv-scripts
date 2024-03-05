@@ -12,6 +12,7 @@ if not (HasStatus("Seal Sweetener") or HasStatus("Priority Seal Allowance")) the
         yield("/item Priority Seal Allowance <wait.1>")
         yield("/item Priority Seal Allowance <wait.4>")
     end
+end
 
 -- deliveroo
 yield("/deliveroo enable")
