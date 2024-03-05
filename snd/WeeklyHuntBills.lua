@@ -1,6 +1,6 @@
 -- Grab all weekly hunt marks
 
-functionsToLoad = loadfile() --change this to where you save _functions.lua
+functionsToLoad = loadfile(variable_with_the_file_path) --change this to where you save _functions.lua
 functionsToLoad()
 
 function GrabHunt(boardName, stringIndex, huntIndex)
