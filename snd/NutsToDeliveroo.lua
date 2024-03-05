@@ -26,30 +26,35 @@ function BuyMoonwardAccessories()
 end
 
 function WalkTo(x, y, z)
-    PathMoveTo(x, y, z)
-    while PathIsRunning() do
-        yield("/wait 1")
+    PathfindAndMoveTo(x, y, z)
+    while (PathIsRunning() or PathfindInProgress()) do
+        yield("/wait 0.5")
     end
 end
 
--- check for navmesh
-if not NavIsReady() then
-    yield("Navmesh not ready!")
-    yield("/pcraft stop")
+function ZoneTransition()
+    repeat 
+        yield("/wait 0.5")
+    until not IsPlayerAvailable()
+    repeat 
+        yield("/wait 0.5")
+    until IsPlayerAvailable()
 end
 
-yield("/tp Old Sharlayan <wait.10>")
-yield("/li Scholar's Harbor <wait.5>")
+yield("/tp Old Sharlayan")
+ZoneTransition()
+yield("/li Scholar's Harbor")
+ZoneTransition()
 WalkTo(33.5, -15.5, 102.5)
 BuyMoonwardAccessories()
-yield("/wait 5")
+yield("/wait 2.5")
 
+-- GC time
 TeleportToGCTown()
-yield("/wait 10")
-
--- walk to gc
+ZoneTransition()
 if GetPlayerGC() == 1 then
-    yield("/li Aftcastle <wait.5>")
+    yield("/li The Aftcastle")
+    ZoneTransition()
     WalkTo(94, 40.5, 74.5)
 elseif GetPlayerGC() == 2 then
     WalkTo(-68.5, -0.5, -8.5)
@@ -68,7 +73,3 @@ end
 
 -- deliveroo
 yield("/deliveroo enable")
-yield("/wait 1")
-while DeliverooIsTurnInRunning() do
-    yield("/wait 5")
-end
