@@ -1,8 +1,10 @@
 -- Grab all weekly hunt marks
 
+functionsToLoad = loadfile() --change this to where you save _functions.lua
+functionsToLoad()
+
 function GrabHunt(boardName, stringIndex, huntIndex)
-    yield(string.format("/target %s Board <wait.0.5>", boardName))
-    yield("/pinteract <wait.1>")
+    TargetedInteract(boardName.." Board")
     yield(string.format("/pcall SelectString true %d <wait.1>", stringIndex))
     if not huntIndex then
         yield("/pcall Mobhunt true 0 <wait.1>")
@@ -11,24 +13,13 @@ function GrabHunt(boardName, stringIndex, huntIndex)
     end
 end
 
-function WalkTo(x, y, z)
-    PathMoveTo(x, y, z)
-    while PathIsRunning() do
-        yield("/wait 1")
-    end
-end
-
--- check for navmesh
-if not NavIsReady() then
-    yield("Navmesh not ready!")
-    yield("/pcraft stop")
-end
-
 -- ARR
 TeleportToGCTown()
+ZoneTransition()
 yield("/wait 10")
 if GetPlayerGC() == 1 then
-    yield("/li Aftcastle <wait.5>")
+    yield("/li The Aftcastle")
+    ZoneTransition()
     WalkTo(94, 40, 61)
 elseif GetPlayerGC() == 2 then
     WalkTo(-77, -0.5, 2)
@@ -38,23 +29,29 @@ end
 GrabHunt("Hunt", 1)
 
 -- HW
-yield("/tp Foundation <wait.10>")
-yield("/li The Forgotten Knight <wait.5>")
+yield("/tp Foundation")
+ZoneTransition()
+yield("/li The Forgotten Knight")
+ZoneTransition()
 WalkTo(74, 24, 21)
 GrabHunt("Clan Hunt", 3, 2)
 
 -- SB
-yield("/tp Kugane <wait.10>")
+yield("/tp Kugane")
+ZoneTransition()
 WalkTo(-30.5, 0, -43.5)
 GrabHunt("Clan Hunt", 3, 3)
 
 -- ShB
-yield("/tp The Crystarium <wait.10>")
+yield("/tp The Crystarium")
+ZoneTransition()
 WalkTo(-85, 0, -90.5)
 GrabHunt("Nuts", 3, 4)
 
 -- EW
-yield("/tp Radz-at-Han <wait.10>")
-yield("/li Mehryde's Meyhane <wait.5>")
+yield("/tp Radz-at-Han")
+ZoneTransition()
+yield("/li Mehryde's Meyhane")
+ZoneTransition()
 WalkTo(-36, 1.5, -193)
 GrabHunt("Guildship Hunt", 3, 5)
