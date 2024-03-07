@@ -1,7 +1,5 @@
 function WalkTo(x, y, z)
-    new_x = math.random((x - 2) * 1000, (x + 2) * 1000) / 1000
-    new_z = math.random((z - 2) * 1000, (z + 2) * 1000) / 1000
-    PathfindAndMoveTo(new_x, y, new_z, false)
+    PathfindAndMoveTo(x, y, z, false)
     while (PathIsRunning() or PathfindInProgress()) do
         yield("/wait 0.5")
     end
