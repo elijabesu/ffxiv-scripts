@@ -5,7 +5,7 @@ function BuyMoonwardAccessories()
     TargetedInteract("J'lakshai")
     yield("/pcall SelectIconString false 1")
     yield("/wait 1")
-    for i, v in ipairs({38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49}) do
+    for i, v in ipairs({12, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49}) do
         yield(string.format("/pcall ShopExchangeCurrency false 0 %d 1 0", v))
         yield("/wait 0.5")
     end

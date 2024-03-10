@@ -7,7 +7,7 @@ function WaitForAddon(addonName)
     end
 end
 
-yield("/maincommand 57") -- open PF
+yield("/partyfinder") -- open PF
 WaitForAddon("LookingForGroup")
 yield("/pcall LookingForGroup true 14") -- Recruit Members
 WaitForAddon("LookingForGroupCondition")
