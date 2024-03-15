@@ -15,6 +15,6 @@ yield("/pcall LookingForGroupCondition true 30") -- Reset
 WaitForAddon(SelectYesno)
 yield("/pcall SelectYesno true 0")
 yield("/pcall LookingForGroupCondition true 12 11u 0") -- The Hunt
-
 yield("/pcall LookingForGroupCondition true 15 \""..comment.."\"") -- comment
 yield("/pcall LookingForGroupCondition true 0 \""..comment.."\"") -- Recruit Members
+yield("/partyfinder") -- close PF

@@ -1,4 +1,5 @@
-functionsToLoad = loadfile(variable_with_the_file_path) --change this to where you save _functions.lua
+-- Make sure the _functions.lua file is in the SND folder!!
+functionsToLoad = os.getenv("appdata").."\\XIVLauncher\\pluginConfigs\\SomethingNeedDoing\\_functions.lua"
 functionsToLoad()
 
 function BuyMoonwardAccessories()
