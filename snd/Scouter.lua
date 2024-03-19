@@ -1,13 +1,25 @@
+-- Meant to be used with Hunt Helper
+-- Required plogons: vnavmesh, Teleporter
+
 -- Make sure ALL paths files are in the SND subfolder!!
 folder_path = os.getenv("appdata").."\\XIVLauncher\\pluginConfigs\\SomethingNeedDoing\\paths"
 
-expansion = "shb" -- "shb" only for now
+expansion = "ew" -- "ew", "shb", or "sb"
 
-shb_zones = {813, 814, 815, 816, 817, 818}
-shb_teleports = {"Fort Jobb", "Stilltide", "Mord Souq", "Lydha Lran", "Fanow", "The Ondo Cups"}
-
-ew_zones = {} -- TODO
-ew_teleports = {"Yedlihmad", "Camp Broken Glass", "The Archeion", "Sinus Lacrimarum", "Abode of the Ea", "The Twelve Wonders"}
+data = {
+    ew = {
+        zone = {957, 958, 956, 959, 960, 961},
+        tp = {"Yedlihmad", "Camp Broken Glass", "The Archeion", "Sinus Lacrimarum", "Abode of the Ea", "The Twelve Wonders"},
+    },
+    shb = {
+        zone = {813, 814, 815, 816, 817, 818},
+        tp = {"Fort Jobb", "Stilltide", "Mord Souq", "Lydha Lran", "Fanow", "The Ondo Cups"},
+    },
+    sb = {
+        zone = {612, 620, 621, 613, 614, 622},
+        tp = {"Castrum Oriens", "Ala Gannha", "Porta Praetoria", "Onokoro", "Namai", "Reunion"},
+    },
+}
 
 function FlyTo(x, y, z)
     if GetCharacterCondition(4, false) then
@@ -30,28 +42,31 @@ function ZoneTransition()
     until IsPlayerAvailable()
 end
 
--- thank 69 for this uwu
+function WaitForMesh()
+    while not NavIsReady() do
+        yield("Waiting for navmesh, currently at "..math.floor(NavBuildProgress()*100).."%")
+        yield("/wait 1")
+    end
+end
+
+-- thanks 69 for this uwu
 function ExtractCoordinates(line)
     local x, y, z = line:match("(-?%d*%.?%d+),%s*(-?%d*%.?%d+),%s*(-?%d*%.?%d+)")
     return tonumber(x), tonumber(y), tonumber(z)
 end
 
-if expansion == "shb" then
-    zones = shb_zones
-    teleports = shb_teleports
-elseif expansion == "ew" then
-    yield("Not yet supported.")
-    yield("/pcraft stop")
+if (expansion == "ew" or expansion == "shb" or expansion == "sb") then
+    expData = data[expansion]
 else
     yield("Wrong expansion.")
     yield("/pcraft stop")
 end
 
-for i, v in ipairs(zones) do
+for i, v in ipairs(expData["zone"]) do
     file = io.open(folder_path.."\\"..v..".txt", "r")
     if file then
         if not IsInZone(v) then
-            yield("/tp "..teleports[i])
+            yield("/tp "..expData["tp"][i])
             ZoneTransition()
         end
         for line in file:lines() do
