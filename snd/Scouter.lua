@@ -79,9 +79,15 @@ function ExtractCoordinates(line)
     return tonumber(x), tonumber(y), tonumber(z)
 end
 
-function IsRankNearby(zoneIndex)
+function NearbyRank(zoneIndex)
     possibleRanks = data[expansion]["ranks"][zoneIndex]
-    return DoesObjectExist(possibleRanks[1]) or DoesObjectExist(possibleRanks[2])
+    if DoesObjectExist(possibleRanks[1]) then
+        return possibleRanks[1]
+    elseif DoesObjectExist(possibleRanks[2]) then
+        return possibleRanks[2]
+    else
+        return false
+    end
 end
 
 if (expansion == "ew" or expansion == "shb" or expansion == "sb") then
@@ -97,13 +103,18 @@ for zoneIndex, zoneId in ipairs(expData["zone"]) do
         if not IsInZone(zoneId) then
             yield("/tp "..expData["tp"][zoneIndex])
             ZoneTransition()
+            WaitForMesh()
         end
         ranksInZone = 0
+        savedMark = ""
         for line in file:lines() do
             x, y, z = ExtractCoordinates(line)
             FlyTo(x, y, z)
-            if IsRankNearby(zoneIndex) then
-                ranksInZone = ranksInZone + 1
+            if NearbyRank(zoneIndex) then
+                if savedMark ~= NearbyRank(zoneIndex) then
+                    ranksInZone = ranksInZone + 1
+                    savedMark = NearbyRank(zoneIndex)
+                end
             end
             if ranksInZone == 2 then break end
         end
